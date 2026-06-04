@@ -43,6 +43,8 @@ jobs:
 
       # No "playwright install" step — the container already has the browsers.
       - name: Run tests (sharded)
+        # Force bash: the container's default shell is sh (dash), which has no arrays.
+        shell: bash
         run: |
           ARGS=(--shard="${{ matrix.shard }}/2")
           if [ "${{ inputs.project }}" != "all" ]; then ARGS+=(--project="${{ inputs.project }}"); fi
