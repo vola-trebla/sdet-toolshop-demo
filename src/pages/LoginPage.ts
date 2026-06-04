@@ -1,5 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { step } from '@utils/step';
+import { Routes } from '@constants/routes';
 
 /**
  * Assertion-free Page Object. Exposes actions and readonly locators; the spec asserts.
@@ -20,7 +21,7 @@ export class LoginPage {
 
   @step
   async open(): Promise<void> {
-    await this.page.goto('/auth/login');
+    await this.page.goto(Routes.login);
   }
 
   @step

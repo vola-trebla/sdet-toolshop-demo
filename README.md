@@ -29,6 +29,7 @@ src/
               ProductDetailPage, AccountPage
   services/   ToolshopApi, schemas                   (backend communication + zod contracts)
   data/       UserBuilder                            (dynamic test data)
+  constants/  routes, endpoints                      (web paths + API endpoints)
   fixtures/   app.fixture                            (dependency injection)
   utils/      config, step                           (env config, @step decorator)
 tests/

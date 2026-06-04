@@ -1,5 +1,6 @@
 import { test as setup, expect } from '@fixtures/app.fixture';
 import { config } from '@utils/config';
+import { RoutePatterns } from '@constants/routes';
 
 /**
  * Runs once before the authenticated tests (wired as a project dependency).
@@ -11,7 +12,7 @@ setup('authenticate', async ({ page, loginPage }) => {
   await loginPage.login(config.customer.email, config.customer.password);
 
   // Guard: only persist the session if login actually succeeded.
-  await expect(page).toHaveURL(/account/);
+  await expect(page).toHaveURL(RoutePatterns.account);
   // And wait until the JWT is actually written to localStorage — otherwise a fast
   // CI run can snapshot the state before the app persists the token (flaky reuse).
   await page.waitForFunction(() => !!window.localStorage.getItem('auth-token'));

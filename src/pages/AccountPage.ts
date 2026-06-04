@@ -1,6 +1,7 @@
 import type { Locator, Page } from '@playwright/test';
 import { step } from '@utils/step';
 import { HeaderNav } from '@components/HeaderNav';
+import { Routes } from '@constants/routes';
 
 /**
  * Authenticated account landing page. Composes the shared HeaderNav component.
@@ -19,6 +20,6 @@ export class AccountPage {
 
   @step
   async open(): Promise<void> {
-    await this.page.goto('/account');
+    await this.page.goto(Routes.account);
   }
 }

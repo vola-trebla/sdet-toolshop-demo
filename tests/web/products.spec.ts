@@ -1,4 +1,5 @@
 import { test, expect } from '@fixtures/app.fixture';
+import { RoutePatterns } from '@constants/routes';
 
 test.describe('Product catalog @web @catalog', () => {
   test.beforeEach(async ({ productsPage }) => {
@@ -31,7 +32,7 @@ test.describe('Product catalog @web @catalog', () => {
     await productsPage.openProductByName('Pliers');
 
     // page is used only for the navigation assertion; the DOM goes through the page object.
-    await expect(page).toHaveURL(/\/product\//);
+    await expect(page).toHaveURL(RoutePatterns.product);
     await expect(productDetailPage.title).toHaveText('Pliers');
   });
 });

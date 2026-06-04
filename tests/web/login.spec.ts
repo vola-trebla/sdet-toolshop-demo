@@ -1,6 +1,7 @@
 import { test, expect } from '@fixtures/app.fixture';
 import { UserBuilder } from '@data/UserBuilder';
 import { config } from '@utils/config';
+import { RoutePatterns } from '@constants/routes';
 
 test.describe('Login @web @auth', () => {
   test.beforeEach(async ({ loginPage }) => {
@@ -11,7 +12,7 @@ test.describe('Login @web @auth', () => {
     await loginPage.login(config.customer.email, config.customer.password);
 
     // Reaching the account route is the reliable proof of a successful sign-in.
-    await expect(page).toHaveURL(/account/);
+    await expect(page).toHaveURL(RoutePatterns.account);
   });
 
   test('invalid credentials are rejected', async ({ loginPage }) => {
