@@ -38,10 +38,10 @@ export default defineConfig({
 
   projects: [
     {
-      // Logs in once and saves the session; runs before the web project.
+      // Creates the reusable customer storageState consumed by the web-auth project.
       name: 'setup',
-      testDir: './tests',
-      testMatch: /auth\.setup\.ts/,
+      testDir: './tests/setup',
+      testMatch: /customer-session\.setup\.ts/,
       use: { ...devices['Desktop Chrome'] },
     },
     {
