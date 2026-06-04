@@ -19,6 +19,7 @@ export class ProductsPage {
     this.productNames = page.getByTestId('product-name');
     // Deliberate workaround: the card's <a> link has no stable test id, so we climb
     // from the product-name test id to its anchor. Encapsulated here, not used in specs.
+    // In a real project: ask the devs for a stable data-test on the card link instead.
     this.productCards = this.productNames.locator('xpath=ancestor::a');
   }
 

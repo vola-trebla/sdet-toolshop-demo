@@ -99,7 +99,7 @@ authenticated. The file is git-ignored and regenerated each run.
 
 ## Conventions
 
-- Domains are folders; execution slices are tags (`@smoke`, `@auth`, `@catalog`, `@negative`).
+- Domains are folders; execution slices are tags: `@smoke`, `@catalog`, `@negative`, `@login` (login/credential flow), `@auth` (consumes the saved authenticated session).
 - Config and credentials resolve from env (`src/utils/config.ts`), validated and never hardcoded.
 - `npm run check` before pushing; format with `npm run format`.
 
