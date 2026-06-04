@@ -8,8 +8,12 @@ import { test } from '@playwright/test';
  * Usage:
  *   @step
  *   async login(...) { ... }   // reported as "LoginPage.login"
+ *
+ * The step name is only `Class.method` — arguments are never interpolated, so
+ * secrets (passwords, tokens) can't leak into reports. `Return extends Promise`
+ * restricts the decorator to async methods (the only thing a step can await).
  */
-export function step<This, Args extends unknown[], Return>(
+export function step<This, Args extends unknown[], Return extends Promise<unknown>>(
   target: (this: This, ...args: Args) => Return,
   context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>,
 ) {
