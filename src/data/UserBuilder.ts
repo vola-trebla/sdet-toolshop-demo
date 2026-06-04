@@ -18,7 +18,12 @@ export interface NewUser {
 
 /**
  * Fluent builder for registration payloads.
- * Every user is unique (faker) so parallel tests never collide (see research: Test Data Management).
+ * Every user is unique (faker) so parallel tests never collide.
+ *
+ * Cleanup: the demo API exposes no user-delete endpoint, so created users are not
+ * torn down. Isolation relies on the unique `qa-<uuid>@example.com` email per build.
+ * If a delete endpoint becomes available, register created emails in a worker-scoped
+ * registry and remove them in fixture teardown.
  */
 export class UserBuilder {
   private user: NewUser;
@@ -48,7 +53,30 @@ export class UserBuilder {
     return this;
   }
 
+  withPassword(password: string): this {
+    this.user.password = password;
+    return this;
+  }
+
+  withName(firstName: string, lastName: string): this {
+    this.user.first_name = firstName;
+    this.user.last_name = lastName;
+    return this;
+  }
+
+  withCountry(country: string): this {
+    this.user.address.country = country;
+    return this;
+  }
+
+  /** Apply arbitrary top-level overrides for one-off cases. */
+  with(overrides: Partial<NewUser>): this {
+    this.user = { ...this.user, ...overrides };
+    return this;
+  }
+
+  /** Returns a deep copy so a reused builder can't be mutated through its output. */
   build(): NewUser {
-    return this.user;
+    return structuredClone(this.user);
   }
 }
