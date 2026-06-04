@@ -3,28 +3,18 @@ import { expect } from '@playwright/test';
 import { config } from '@utils/config';
 import type { NewUser } from '@data/UserBuilder';
 import { step } from '@utils/step';
-
-export interface LoginResponse {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-}
-
-export interface RegisteredUser {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-}
-
-export interface ProductList {
-  current_page: number;
-  data: Array<{ id: string; name: string; price: number; in_stock: boolean }>;
-}
+import {
+  LoginResponseSchema,
+  ProductListSchema,
+  RegisteredUserSchema,
+  type ProductList,
+  type RegisteredUser,
+} from '@services/schemas';
 
 /**
  * Service-layer client for the Toolshop backend.
- * Raw requests live here, never scattered across spec files (see research: Service Layer).
+ * Raw requests live here, never scattered across spec files. Every parsed response
+ * is validated against its zod schema, so callers get typed, contract-checked data.
  */
 export class ToolshopApi {
   constructor(private readonly request: APIRequestContext) {}
@@ -35,7 +25,7 @@ export class ToolshopApi {
       data: user,
     });
     expect(response.ok(), `register failed: ${await response.text()}`).toBeTruthy();
-    return response.json();
+    return RegisteredUserSchema.parse(await response.json());
   }
 
   /** Raw login response — lets specs assert on negative paths (e.g. 401) without throwing. */
@@ -49,7 +39,7 @@ export class ToolshopApi {
   async login(email: string, password: string): Promise<string> {
     const response = await this.loginResponse(email, password);
     expect(response.ok(), `login failed: ${await response.text()}`).toBeTruthy();
-    const body: LoginResponse = await response.json();
+    const body = LoginResponseSchema.parse(await response.json());
     return body.access_token;
   }
 
@@ -59,6 +49,6 @@ export class ToolshopApi {
       params: { page },
     });
     expect(response.ok()).toBeTruthy();
-    return response.json();
+    return ProductListSchema.parse(await response.json());
   }
 }
