@@ -1,16 +1,17 @@
 import { test, expect } from '@fixtures/app.fixture';
 
 test.describe('Product catalog @web @catalog', () => {
-  test('catalog renders products on the home page @smoke', async ({ productsPage }) => {
+  test.beforeEach(async ({ productsPage }) => {
     await productsPage.open();
+  });
 
+  test('catalog renders products on the home page @smoke', async ({ productsPage }) => {
     // Auto-retrying assertions: wait for the Angular list to render, no hardcoded waits.
     await expect(productsPage.productNames.first()).toBeVisible();
     await expect(productsPage.productNames).not.toHaveCount(0);
   });
 
   test('search narrows the catalog', async ({ productsPage }) => {
-    await productsPage.open();
     await expect(productsPage.productNames.first()).toBeVisible();
 
     await productsPage.search('Pliers');
@@ -23,7 +24,6 @@ test.describe('Product catalog @web @catalog', () => {
     productsPage,
     page,
   }) => {
-    await productsPage.open();
     await expect(productsPage.productNames.first()).toBeVisible();
 
     // Exact match matters: the catalog also has "Combination Pliers", "Long Nose Pliers", etc.
