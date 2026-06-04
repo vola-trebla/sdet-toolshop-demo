@@ -19,13 +19,23 @@ import {
 export class ToolshopApi {
   constructor(private readonly request: APIRequestContext) {}
 
+  /** Raw register response — lets specs assert on negative paths (409, 422) without throwing. */
+  async registerResponse(user: NewUser): Promise<APIResponse> {
+    return this.request.post(`${config.apiBaseUrl}/users/register`, { data: user });
+  }
+
   @step
   async register(user: NewUser): Promise<RegisteredUser> {
-    const response = await this.request.post(`${config.apiBaseUrl}/users/register`, {
-      data: user,
-    });
+    const response = await this.registerResponse(user);
     expect(response.ok(), `register failed: ${await response.text()}`).toBeTruthy();
     return RegisteredUserSchema.parse(await response.json());
+  }
+
+  /** Raw profile fetch — asserts auth gating (401 without a valid token). */
+  async getProfileResponse(token?: string): Promise<APIResponse> {
+    return this.request.get(`${config.apiBaseUrl}/users/me`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
   }
 
   /** Raw login response — lets specs assert on negative paths (e.g. 401) without throwing. */
