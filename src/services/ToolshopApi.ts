@@ -13,8 +13,12 @@ import {
 
 /**
  * Service-layer client for the Toolshop backend.
- * Raw requests live here, never scattered across spec files. Every parsed response
- * is validated against its zod schema, so callers get typed, contract-checked data.
+ * Raw requests live here, never scattered across spec files.
+ *
+ * Two method flavours, by design:
+ * - `*Response` — raw APIResponse, no assertions; for negative/edge paths (4xx) the spec inspects.
+ * - happy-path helpers (`register`, `login`, `getProducts`) — assert `ok()` and return data
+ *   validated against its zod schema, so callers get typed, contract-checked results.
  */
 export class ToolshopApi {
   constructor(private readonly request: APIRequestContext) {}
@@ -53,11 +57,14 @@ export class ToolshopApi {
     return body.access_token;
   }
 
+  /** Raw products response — lets specs assert on edge paths without throwing. */
+  async getProductsResponse(page = 1): Promise<APIResponse> {
+    return this.request.get(`${config.apiBaseUrl}/products`, { params: { page } });
+  }
+
   @step
   async getProducts(page = 1): Promise<ProductList> {
-    const response = await this.request.get(`${config.apiBaseUrl}/products`, {
-      params: { page },
-    });
+    const response = await this.getProductsResponse(page);
     expect(response.ok()).toBeTruthy();
     return ProductListSchema.parse(await response.json());
   }
