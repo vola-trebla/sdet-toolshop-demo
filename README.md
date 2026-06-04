@@ -14,7 +14,7 @@ Targets the public [Toolshop](https://practicesoftwaretesting.com) app (Web UI +
 - **Dynamic test data** — `UserBuilder` + faker, unique per run (parallel-safe).
 - **Auth reuse** — a `setup` project signs in once and persists `storageState`; authenticated tests start logged in (no per-test login).
 - **Resilient locators** — `data-test` / role-based, no brittle CSS chains.
-- **Allure reporting** — a `@step` decorator turns Page Object / service actions into report steps automatically; specs add metadata (severity, feature/story, TMS links). The same output feeds Allure TestOps.
+- **Allure reporting** — a `@step` decorator turns Page Object / service actions into report steps automatically; title tags (`@smoke`, `@auth`, ...) map to Allure tags. Richer metadata (severity, TMS links) is available via the `allure-js-commons` API where a case warrants it. The same output feeds Allure TestOps.
 - **CI with sharding** — GitHub Actions runs shards in parallel and merges into one HTML report.
 
 ## Layout
