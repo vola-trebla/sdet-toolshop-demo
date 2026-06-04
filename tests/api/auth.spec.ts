@@ -1,6 +1,5 @@
 import { test, expect } from '@fixtures/app.fixture';
 import { UserBuilder } from '@data/UserBuilder';
-import { config } from '@utils/config';
 
 test.describe('Auth API @api @auth', () => {
   test('a freshly built user can register and then log in @smoke', async ({ api }) => {
@@ -16,9 +15,13 @@ test.describe('Auth API @api @auth', () => {
     expect(token).toMatch(/^eyJ/); // JWT
   });
 
-  test('login rejects wrong password', async ({ api }) => {
-    // Goes through the service layer; no raw requests or URLs in the spec.
-    const response = await api.loginResponse(config.customer.email, 'nope');
+  test('login rejects a wrong password', async ({ api }) => {
+    // Register a throwaway user: hammering the shared demo account with bad logins
+    // locks it (HTTP 423) for every test, so the negative case must stay isolated.
+    const user = new UserBuilder().build();
+    await api.register(user);
+
+    const response = await api.loginResponse(user.email, 'wrong-password');
     expect(response.status()).toBe(401);
   });
 });
