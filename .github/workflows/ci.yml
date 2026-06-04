@@ -27,6 +27,13 @@ jobs:
       fail-fast: false
       matrix:
         shard: [1, 2]
+    # Config validation fails fast on CI, so these must be provided. Defaults target the
+    # public Toolshop demo; override via repo variables / secrets to point at another env.
+    env:
+      WEB_BASE_URL: ${{ vars.WEB_BASE_URL || 'https://practicesoftwaretesting.com' }}
+      API_BASE_URL: ${{ vars.API_BASE_URL || 'https://api.practicesoftwaretesting.com' }}
+      CUSTOMER_EMAIL: ${{ vars.CUSTOMER_EMAIL || 'customer@practicesoftwaretesting.com' }}
+      CUSTOMER_PASSWORD: ${{ secrets.CUSTOMER_PASSWORD || 'welcome01' }}
     steps:
       - uses: actions/checkout@v5
 
