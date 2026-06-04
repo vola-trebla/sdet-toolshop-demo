@@ -11,10 +11,9 @@ setup('authenticate', async ({ page, loginPage }) => {
   await loginPage.open();
   await loginPage.login(config.customer.email, config.customer.password);
 
-  // Guard: only persist the session if login actually succeeded.
+  // Persist only on a confirmed login, and only once the JWT is in localStorage,
+  // otherwise a fast run can snapshot an empty session.
   await expect(page).toHaveURL(RoutePatterns.account);
-  // And wait until the JWT is actually written to localStorage — otherwise a fast
-  // CI run can snapshot the state before the app persists the token (flaky reuse).
   await page.waitForFunction(() => !!window.localStorage.getItem('auth-token'));
 
   await page.context().storageState({ path: config.authFile });

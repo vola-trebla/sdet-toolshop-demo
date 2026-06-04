@@ -1,19 +1,14 @@
 import { test, expect } from '@fixtures/app.fixture';
 import { UserBuilder } from '@data/UserBuilder';
 
-/**
- * Negative API coverage — proves the suite checks more than the happy path.
- * Uses the raw *Response service methods so a non-2xx status doesn't throw.
- *
- * Note: this API does not validate email format and silently clamps out-of-range
- * page numbers, so "invalid email" and "invalid page" yield no error to assert.
- */
+// Note: this API accepts malformed emails and clamps out-of-range pages, so those
+// yield no error to assert — hence only the cases below.
 test.describe('API negative paths @api @negative', () => {
   test('registration rejects a duplicate email', async ({ api }) => {
     const user = new UserBuilder().build();
-    await api.register(user); // first registration succeeds
+    await api.register(user);
 
-    const response = await api.registerResponse(user); // same payload again
+    const response = await api.registerResponse(user);
     expect(response.status()).toBe(409);
     expect((await response.json()).email?.[0]).toMatch(/already exists/i);
   });
@@ -27,7 +22,7 @@ test.describe('API negative paths @api @negative', () => {
   });
 
   test('a protected endpoint rejects an unauthenticated request', async ({ api }) => {
-    const response = await api.getProfileResponse(); // no token
+    const response = await api.getProfileResponse();
 
     expect(response.status()).toBe(401);
   });
