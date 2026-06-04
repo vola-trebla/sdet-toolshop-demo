@@ -10,9 +10,9 @@ jobs:
     name: Lint + typecheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: lts/*
           cache: npm
@@ -23,3 +23,15 @@ jobs:
       # ESLint + tsc --noEmit. Fails the job on any lint error or type error.
       - name: Run static checks
         run: npm run check
+
+  actionlint:
+    name: Lint workflows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      # Validates the GitHub Actions workflows themselves (expressions, contexts,
+      # and shellcheck over run: blocks) — the layer the JS checks don't cover.
+      - uses: docker://rhysd/actionlint:1.7.12
+        with:
+          args: -color
