@@ -7,6 +7,10 @@ import { config } from './src/utils/config';
 export default defineConfig({
   testDir: './tests',
 
+  // Web-first assertions retry until this timeout. A live third-party site on a
+  // cold CI runner needs more headroom than the 5s default for post-login state.
+  expect: { timeout: 10_000 },
+
   // Every test is isolated and parallel-safe (see research: Parallel Execution).
   fullyParallel: true,
 
