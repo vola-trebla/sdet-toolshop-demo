@@ -1,5 +1,5 @@
-import { test, expect } from '../../src/fixtures/app.fixture';
-import { config } from '../../src/utils/config';
+import { test, expect } from '@fixtures/app.fixture';
+import { config } from '@utils/config';
 
 test.describe('Login @web @auth', () => {
   test('valid customer can sign in @smoke', async ({ page, loginPage }) => {

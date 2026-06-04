@@ -1,6 +1,6 @@
-import { test, expect } from '../../src/fixtures/app.fixture';
-import { UserBuilder } from '../../src/data/UserBuilder';
-import { config } from '../../src/utils/config';
+import { test, expect } from '@fixtures/app.fixture';
+import { UserBuilder } from '@data/UserBuilder';
+import { config } from '@utils/config';
 
 test.describe('Auth API @api @auth', () => {
   test('a freshly built user can register and then log in @smoke', async ({ api }) => {

@@ -1,6 +1,6 @@
 import { APIRequestContext, APIResponse, expect } from '@playwright/test';
-import { config } from '../utils/config';
-import { NewUser } from '../data/UserBuilder';
+import { config } from '@utils/config';
+import { NewUser } from '@data/UserBuilder';
 
 export interface LoginResponse {
   access_token: string;

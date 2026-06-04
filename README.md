@@ -12,6 +12,7 @@ Targets the public [Toolshop](https://practicesoftwaretesting.com) app (Web UI +
 - **Dependency injection via fixtures** — no `new` in spec files.
 - **Service layer** — backend calls isolated in `ToolshopApi`, not scattered across tests.
 - **Dynamic test data** — `UserBuilder` + faker, unique per run (parallel-safe).
+- **Auth reuse** — a `setup` project signs in once and persists `storageState`; authenticated tests start logged in (no per-test login).
 - **Resilient locators** — `data-test` / role-based, no brittle CSS chains.
 - **CI with sharding** — GitHub Actions runs shards in parallel and merges into one HTML report.
 
@@ -19,14 +20,15 @@ Targets the public [Toolshop](https://practicesoftwaretesting.com) app (Web UI +
 
 ```
 src/
-  pages/      LoginPage, ProductsPage   (UI interaction boundaries)
-  services/   ToolshopApi               (backend communication)
-  data/       UserBuilder               (dynamic test data)
-  fixtures/   app.fixture               (dependency injection)
-  utils/      config                    (environment-driven config)
+  pages/      LoginPage, ProductsPage, AccountPage   (UI interaction boundaries)
+  services/   ToolshopApi                            (backend communication)
+  data/       UserBuilder                            (dynamic test data)
+  fixtures/   app.fixture                            (dependency injection)
+  utils/      config                                 (environment-driven config)
 tests/
-  web/        login, products           (E2E)
-  api/        auth, products            (REST)
+  auth.setup.ts                                      (logs in once, saves session)
+  web/        login, products, account               (E2E)
+  api/        auth, products                         (REST)
 ```
 
 ## Run
@@ -51,7 +53,6 @@ npm run report      # open last HTML report
 
 ## Roadmap (talked through, not built here)
 
-- Auth reuse via a `setup` project + `storageState` (login once, reuse across specs).
 - Telegram bot coverage via a `TelegramClient` service + cross-system validation.
 - Auto-create Jira tickets on failure via a custom Playwright reporter.
 - Allure reporting.

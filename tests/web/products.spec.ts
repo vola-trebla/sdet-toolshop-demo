@@ -1,4 +1,4 @@
-import { test, expect } from '../../src/fixtures/app.fixture';
+import { test, expect } from '@fixtures/app.fixture';
 
 test.describe('Product catalog @web @catalog', () => {
   test('catalog renders products on the home page @smoke', async ({ productsPage }) => {
