@@ -5,9 +5,10 @@ import { z } from 'zod';
  * Single source of truth for environment-driven configuration.
  *
  * Locally the suite falls back to the public Toolshop demo so it runs out of the box.
- * On CI (`process.env.CI`) there are NO fallbacks: every value must come from the
- * environment, and the suite fails fast with a descriptive error if one is missing or
- * malformed — so CI can never silently run against the demo account or a wrong URL.
+ * On CI (`process.env.CI`) there is NO implicit fallback: every value must be provided
+ * explicitly by the environment, and a missing/malformed one fails fast with a
+ * descriptive error. The manual workflow supplies these values (defaulting to the public
+ * demo, overridable via repo variables/secrets), so config never silently picks them.
  */
 const isCI = !!process.env.CI;
 

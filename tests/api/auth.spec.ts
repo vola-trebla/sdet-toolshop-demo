@@ -1,7 +1,7 @@
 import { test, expect } from '@fixtures/app.fixture';
 import { UserBuilder } from '@data/UserBuilder';
 
-test.describe('Auth API @api @auth', () => {
+test.describe('Auth API @api @login', () => {
   test('a freshly built user can register and then log in @smoke', async ({ api }) => {
     const newUser = new UserBuilder().build();
 

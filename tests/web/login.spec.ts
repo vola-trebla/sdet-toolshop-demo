@@ -3,7 +3,7 @@ import { UserBuilder } from '@data/UserBuilder';
 import { config } from '@utils/config';
 import { RoutePatterns } from '@constants/routes';
 
-test.describe('Login @web @auth', () => {
+test.describe('Login @web @login', () => {
   test.beforeEach(async ({ loginPage }) => {
     await loginPage.open();
   });

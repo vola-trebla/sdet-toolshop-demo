@@ -27,8 +27,9 @@ jobs:
       fail-fast: false
       matrix:
         shard: [1, 2]
-    # Config validation fails fast on CI, so these must be provided. Defaults target the
-    # public Toolshop demo; override via repo variables / secrets to point at another env.
+    # Config requires these to be set explicitly on CI (no implicit fallback). We pass
+    # them here defaulting to the public Toolshop demo; override via repo variables /
+    # secrets to point at another environment.
     env:
       WEB_BASE_URL: ${{ vars.WEB_BASE_URL || 'https://practicesoftwaretesting.com' }}
       API_BASE_URL: ${{ vars.API_BASE_URL || 'https://api.practicesoftwaretesting.com' }}
