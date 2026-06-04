@@ -10,4 +10,14 @@ test.describe('Account @web @auth', () => {
     await expect(accountPage.pageTitle).toHaveText('My account');
     await expect(accountPage.favoritesLink).toBeVisible();
   });
+
+  test('customer can sign out from the header', async ({ accountPage }) => {
+    await accountPage.open();
+    await expect(accountPage.header.userMenu).toBeVisible();
+
+    // Action lives in the composed component; the spec asserts the result.
+    await accountPage.header.signOut();
+
+    await expect(accountPage.header.signInLink).toBeVisible();
+  });
 });
