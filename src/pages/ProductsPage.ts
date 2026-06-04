@@ -15,8 +15,16 @@ export class ProductsPage {
     this.searchInput = page.getByTestId('search-query');
     this.searchSubmit = page.getByTestId('search-submit');
     this.searchCaption = page.getByTestId('search_completed');
-    this.productCards = page.getByTestId('product-name').locator('xpath=ancestor::a');
     this.productNames = page.getByTestId('product-name');
+    // Deliberate workaround: the card's <a> link has no stable test id, so we climb
+    // from the product-name test id to its anchor. Encapsulated here, not used in specs.
+    this.productCards = this.productNames.locator('xpath=ancestor::a');
+  }
+
+  /** The card link whose product name is exactly `name`. */
+  productByName(name: string): Locator {
+    // Exact match so "Pliers" doesn't also select "Combination Pliers".
+    return this.productCards.filter({ has: this.page.getByText(name, { exact: true }) });
   }
 
   @step
@@ -32,6 +40,6 @@ export class ProductsPage {
 
   @step
   async openProductByName(name: string): Promise<void> {
-    await this.productNames.filter({ hasText: name }).first().click();
+    await this.productByName(name).click();
   }
 }
