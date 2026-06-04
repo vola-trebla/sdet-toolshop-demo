@@ -3,6 +3,7 @@ import { expect } from '@playwright/test';
 import { config } from '@utils/config';
 import type { NewUser } from '@data/UserBuilder';
 import { step } from '@utils/step';
+import { Endpoints } from '@constants/endpoints';
 import {
   LoginResponseSchema,
   ProductListSchema,
@@ -25,7 +26,7 @@ export class ToolshopApi {
 
   /** Raw register response — lets specs assert on negative paths (409, 422) without throwing. */
   async registerResponse(user: NewUser): Promise<APIResponse> {
-    return this.request.post(`${config.apiBaseUrl}/users/register`, { data: user });
+    return this.request.post(`${config.apiBaseUrl}${Endpoints.register}`, { data: user });
   }
 
   @step
@@ -37,14 +38,14 @@ export class ToolshopApi {
 
   /** Raw profile fetch — asserts auth gating (401 without a valid token). */
   async getProfileResponse(token?: string): Promise<APIResponse> {
-    return this.request.get(`${config.apiBaseUrl}/users/me`, {
+    return this.request.get(`${config.apiBaseUrl}${Endpoints.profile}`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
   }
 
   /** Raw login response — lets specs assert on negative paths (e.g. 401) without throwing. */
   async loginResponse(email: string, password: string): Promise<APIResponse> {
-    return this.request.post(`${config.apiBaseUrl}/users/login`, {
+    return this.request.post(`${config.apiBaseUrl}${Endpoints.login}`, {
       data: { email, password },
     });
   }
@@ -59,7 +60,7 @@ export class ToolshopApi {
 
   /** Raw products response — lets specs assert on edge paths without throwing. */
   async getProductsResponse(page = 1): Promise<APIResponse> {
-    return this.request.get(`${config.apiBaseUrl}/products`, { params: { page } });
+    return this.request.get(`${config.apiBaseUrl}${Endpoints.products}`, { params: { page } });
   }
 
   @step

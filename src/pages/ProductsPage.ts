@@ -1,5 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { step } from '@utils/step';
+import { Routes } from '@constants/routes';
 
 /**
  * Home / catalog page. Actions + readonly locators only.
@@ -29,7 +30,7 @@ export class ProductsPage {
 
   @step
   async open(): Promise<void> {
-    await this.page.goto('/');
+    await this.page.goto(Routes.home);
   }
 
   @step

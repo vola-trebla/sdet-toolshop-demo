@@ -1,35 +1,36 @@
 import { test, expect } from '@fixtures/app.fixture';
+import { RoutePatterns } from '@constants/routes';
+import { Products } from '@constants/test-data';
 
 test.describe('Product catalog @web @catalog', () => {
-  test('catalog renders products on the home page @smoke', async ({ productsPage }) => {
+  test.beforeEach(async ({ productsPage }) => {
     await productsPage.open();
+  });
 
-    // Auto-retrying assertions: wait for the Angular list to render, no hardcoded waits.
+  test('catalog renders products on the home page @smoke', async ({ productsPage }) => {
     await expect(productsPage.productNames.first()).toBeVisible();
     await expect(productsPage.productNames).not.toHaveCount(0);
   });
 
   test('search narrows the catalog', async ({ productsPage }) => {
-    await productsPage.open();
     await expect(productsPage.productNames.first()).toBeVisible();
 
-    await productsPage.search('Pliers');
+    await productsPage.search(Products.pliers);
 
     await expect(productsPage.searchCaption).toBeVisible();
-    await expect(productsPage.productNames.first()).toContainText(/pliers/i);
+    await expect(productsPage.productNames.first()).toContainText(new RegExp(Products.pliers, 'i'));
   });
 
   test('opening a product by exact name lands on its detail page', async ({
     productsPage,
+    productDetailPage,
     page,
   }) => {
-    await productsPage.open();
     await expect(productsPage.productNames.first()).toBeVisible();
 
-    // Exact match matters: the catalog also has "Combination Pliers", "Long Nose Pliers", etc.
-    await productsPage.openProductByName('Pliers');
+    await productsPage.openProductByName(Products.pliers);
 
-    await expect(page).toHaveURL(/\/product\//);
-    await expect(page.getByTestId('product-name')).toHaveText('Pliers');
+    await expect(page).toHaveURL(RoutePatterns.product);
+    await expect(productDetailPage.title).toHaveText(Products.pliers);
   });
 });

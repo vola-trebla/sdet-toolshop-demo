@@ -1,6 +1,7 @@
 import { test as base } from '@playwright/test';
 import { LoginPage } from '@pages/LoginPage';
 import { ProductsPage } from '@pages/ProductsPage';
+import { ProductDetailPage } from '@pages/ProductDetailPage';
 import { AccountPage } from '@pages/AccountPage';
 import { ToolshopApi } from '@services/ToolshopApi';
 
@@ -12,6 +13,7 @@ import { ToolshopApi } from '@services/ToolshopApi';
 type AppFixtures = {
   loginPage: LoginPage;
   productsPage: ProductsPage;
+  productDetailPage: ProductDetailPage;
   accountPage: AccountPage;
   api: ToolshopApi;
 };
@@ -22,6 +24,9 @@ export const test = base.extend<AppFixtures>({
   },
   productsPage: async ({ page }, use) => {
     await use(new ProductsPage(page));
+  },
+  productDetailPage: async ({ page }, use) => {
+    await use(new ProductDetailPage(page));
   },
   accountPage: async ({ page }, use) => {
     await use(new AccountPage(page));
