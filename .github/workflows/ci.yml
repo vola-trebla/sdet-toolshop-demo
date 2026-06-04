@@ -43,6 +43,7 @@ jobs:
 
       # No "playwright install" step — the container already has the browsers.
       - name: Run tests (sharded)
+        shell: bash
         run: |
           ARGS=(--shard="${{ matrix.shard }}/2")
           if [ "${{ inputs.project }}" != "all" ]; then ARGS+=(--project="${{ inputs.project }}"); fi
