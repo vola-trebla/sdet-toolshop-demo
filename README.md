@@ -33,7 +33,7 @@ src/
   fixtures/   app.fixture                            (dependency injection)
   utils/      config, step                           (env config, @step decorator)
 tests/
-  auth.setup.ts                                      (logs in once, saves session)
+  setup/      customer-session.setup.ts              (creates reusable storageState)
   web/        login, products, account               (E2E)
   api/        auth, products, negative               (REST + negative paths)
 ```
@@ -83,7 +83,7 @@ The same `allure-results/` is what an **Allure TestOps** instance ingests in CI 
 
 ## How auth reuse works
 
-`tests/auth.setup.ts` (the `setup` project) logs in once through the UI,
+`tests/setup/customer-session.setup.ts` (the `setup` project) logs in once through the UI,
 verifies the session, and saves `playwright/.auth/customer.json`. The `web-auth`
 project loads that file via `use.storageState`, so its specs start already
 authenticated. The file is git-ignored and regenerated each run.
