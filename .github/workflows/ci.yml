@@ -36,10 +36,10 @@ jobs:
       # No "playwright install" step — the container already has the browsers.
       - name: Run tests (sharded)
         run: |
-          ARGS="--shard=${{ matrix.shard }}/2"
-          if [ "${{ inputs.project }}" != "all" ]; then ARGS="$ARGS --project=${{ inputs.project }}"; fi
-          if [ -n "${{ inputs.grep }}" ]; then ARGS="$ARGS --grep ${{ inputs.grep }}"; fi
-          npx playwright test $ARGS
+          ARGS=(--shard="${{ matrix.shard }}/2")
+          if [ "${{ inputs.project }}" != "all" ]; then ARGS+=(--project="${{ inputs.project }}"); fi
+          if [ -n "${{ inputs.grep }}" ]; then ARGS+=(--grep "${{ inputs.grep }}"); fi
+          npx playwright test "${ARGS[@]}"
 
       - name: Upload blob report
         if: ${{ !cancelled() }}
