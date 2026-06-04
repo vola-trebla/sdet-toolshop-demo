@@ -1,4 +1,4 @@
-name: Lint
+name: Static checks
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
   pull_request:
 
 jobs:
-  eslint:
-    name: ESLint
+  check:
+    name: Lint + typecheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -20,6 +20,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Fails the job (non-zero exit) on any ESLint error.
-      - name: Run ESLint
-        run: npm run lint
+      # ESLint + tsc --noEmit. Fails the job on any lint error or type error.
+      - name: Run static checks
+        run: npm run check
