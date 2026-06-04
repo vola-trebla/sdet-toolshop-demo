@@ -45,10 +45,18 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'web',
+      // Public, unauthenticated tests — no login setup required, clean context.
+      name: 'web-public',
       testDir: './tests/web',
+      testIgnore: /account\.spec\.ts/,
       use: { ...devices['Desktop Chrome'] },
-      // Ensures the saved session exists before authenticated tests run.
+    },
+    {
+      // Authenticated tests — consume the saved session via project-level storageState.
+      name: 'web-auth',
+      testDir: './tests/web',
+      testMatch: /account\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'], storageState: config.authFile },
       dependencies: ['setup'],
     },
     {

@@ -6,6 +6,8 @@
   "scripts": {
     "test": "playwright test",
     "test:web": "playwright test tests/web",
+    "test:web:public": "playwright test --project=web-public",
+    "test:web:auth": "playwright test --project=web-auth",
     "test:api": "playwright test tests/api",
     "test:smoke": "playwright test --grep @smoke",
     "report": "playwright show-report",

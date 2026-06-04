@@ -1,21 +1,19 @@
-import { test as base, Page } from '@playwright/test';
+import { test as base } from '@playwright/test';
 import { LoginPage } from '@pages/LoginPage';
 import { ProductsPage } from '@pages/ProductsPage';
 import { AccountPage } from '@pages/AccountPage';
 import { ToolshopApi } from '@services/ToolshopApi';
-import { config } from '@utils/config';
 
 /**
  * Dependency injection via Playwright fixtures — no `new` in spec files.
- * Each fixture has a single responsibility and is composable (see research: Fixture Design).
+ * Each fixture provides a domain object; browser lifecycle stays Playwright-managed.
+ * Authentication is a project concern (web-auth uses storageState), not a fixture concern.
  */
 type AppFixtures = {
   loginPage: LoginPage;
   productsPage: ProductsPage;
-  api: ToolshopApi;
-  // Authenticated flavour: page already signed in via the reused session.
-  authedPage: Page;
   accountPage: AccountPage;
+  api: ToolshopApi;
 };
 
 export const test = base.extend<AppFixtures>({
@@ -25,19 +23,11 @@ export const test = base.extend<AppFixtures>({
   productsPage: async ({ page }, use) => {
     await use(new ProductsPage(page));
   },
+  accountPage: async ({ page }, use) => {
+    await use(new AccountPage(page));
+  },
   api: async ({ request }, use) => {
     await use(new ToolshopApi(request));
-  },
-
-  // Fresh context seeded with the saved session — no per-test login.
-  authedPage: async ({ browser }, use) => {
-    const context = await browser.newContext({ storageState: config.authFile });
-    const page = await context.newPage();
-    await use(page);
-    await context.close();
-  },
-  accountPage: async ({ authedPage }, use) => {
-    await use(new AccountPage(authedPage));
   },
 });
 

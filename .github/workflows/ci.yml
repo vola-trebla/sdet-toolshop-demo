@@ -8,7 +8,7 @@ on:
       project:
         description: 'Which suite to run'
         type: choice
-        options: [all, web, api]
+        options: [all, web-public, web-auth, api]
         default: all
       grep:
         description: 'Optional tag/title filter (e.g. @smoke)'
