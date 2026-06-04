@@ -1,0 +1,41 @@
+{
+  "name": "sdet-toolshop-demo",
+  "version": "1.0.0",
+  "description": "Playwright + TypeScript demo framework (Web E2E + API) against Toolshop",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:web": "playwright test tests/web",
+    "test:api": "playwright test tests/api",
+    "test:smoke": "playwright test --grep @smoke",
+    "report": "playwright show-report",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,js,mjs,cjs,json,md,yml,yaml}": "prettier --write"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "qa",
+    "automation",
+    "e2e",
+    "api"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@faker-js/faker": "^9.4.0",
+    "@playwright/test": "^1.58.0",
+    "@types/node": "^22.13.0",
+    "dotenv": "^16.4.0",
+    "eslint": "^9.20.0",
+    "eslint-plugin-playwright": "^2.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
+    "prettier": "^3.5.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.24.0"
+  }
+}
