@@ -1,4 +1,4 @@
-import { test, expect } from '../../src/fixtures/app.fixture';
+import { test, expect } from '@fixtures/app.fixture';
 
 test.describe('Products API @api @catalog', () => {
   test('returns a non-empty, well-formed product page @smoke', async ({ api }) => {

@@ -11,4 +11,6 @@ export const config = {
     email: process.env.CUSTOMER_EMAIL ?? 'customer@practicesoftwaretesting.com',
     password: process.env.CUSTOMER_PASSWORD ?? 'welcome01',
   },
+  // Where the once-per-run authenticated session is persisted and reused from.
+  authFile: 'playwright/.auth/customer.json',
 } as const;

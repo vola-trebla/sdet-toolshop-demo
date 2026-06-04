@@ -35,9 +35,18 @@ export default defineConfig({
 
   projects: [
     {
+      // Logs in once and saves the session; runs before the web project.
+      name: 'setup',
+      testDir: './tests',
+      testMatch: /auth\.setup\.ts/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
       name: 'web',
       testDir: './tests/web',
       use: { ...devices['Desktop Chrome'] },
+      // Ensures the saved session exists before authenticated tests run.
+      dependencies: ['setup'],
     },
     {
       // API tests need no browser; they drive Playwright's request context.
