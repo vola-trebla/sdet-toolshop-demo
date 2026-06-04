@@ -1,6 +1,7 @@
 import { APIRequestContext, APIResponse, expect } from '@playwright/test';
 import { config } from '@utils/config';
 import { NewUser } from '@data/UserBuilder';
+import { step } from '@utils/step';
 
 export interface LoginResponse {
   access_token: string;
@@ -27,6 +28,7 @@ export interface ProductList {
 export class ToolshopApi {
   constructor(private readonly request: APIRequestContext) {}
 
+  @step
   async register(user: NewUser): Promise<RegisteredUser> {
     const response = await this.request.post(`${config.apiBaseUrl}/users/register`, {
       data: user,
@@ -42,6 +44,7 @@ export class ToolshopApi {
     });
   }
 
+  @step
   async login(email: string, password: string): Promise<string> {
     const response = await this.loginResponse(email, password);
     expect(response.ok(), `login failed: ${await response.text()}`).toBeTruthy();
@@ -49,6 +52,7 @@ export class ToolshopApi {
     return body.access_token;
   }
 
+  @step
   async getProducts(page = 1): Promise<ProductList> {
     const response = await this.request.get(`${config.apiBaseUrl}/products`, {
       params: { page },

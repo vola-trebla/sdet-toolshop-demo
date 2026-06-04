@@ -1,4 +1,5 @@
 import { Locator, Page } from '@playwright/test';
+import { step } from '@utils/step';
 
 /**
  * Home / catalog page. Actions + readonly locators only.
@@ -18,15 +19,18 @@ export class ProductsPage {
     this.productNames = page.getByTestId('product-name');
   }
 
+  @step
   async open(): Promise<void> {
     await this.page.goto('/');
   }
 
+  @step
   async search(term: string): Promise<void> {
     await this.searchInput.fill(term);
     await this.searchSubmit.click();
   }
 
+  @step
   async openProductByName(name: string): Promise<void> {
     await this.productNames.filter({ hasText: name }).first().click();
   }

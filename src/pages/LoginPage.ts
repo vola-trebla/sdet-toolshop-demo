@@ -1,4 +1,5 @@
 import { Locator, Page } from '@playwright/test';
+import { step } from '@utils/step';
 
 /**
  * Assertion-free Page Object. Exposes actions and readonly locators; the spec asserts.
@@ -17,10 +18,12 @@ export class LoginPage {
     this.errorMessage = page.getByTestId('login-error');
   }
 
+  @step
   async open(): Promise<void> {
     await this.page.goto('/auth/login');
   }
 
+  @step
   async login(email: string, password: string): Promise<void> {
     await this.email.fill(email);
     await this.password.fill(password);
