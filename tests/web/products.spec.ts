@@ -22,6 +22,7 @@ test.describe('Product catalog @web @catalog', () => {
 
   test('opening a product by exact name lands on its detail page', async ({
     productsPage,
+    productDetailPage,
     page,
   }) => {
     await expect(productsPage.productNames.first()).toBeVisible();
@@ -29,7 +30,8 @@ test.describe('Product catalog @web @catalog', () => {
     // Exact match matters: the catalog also has "Combination Pliers", "Long Nose Pliers", etc.
     await productsPage.openProductByName('Pliers');
 
+    // page is used only for the navigation assertion; the DOM goes through the page object.
     await expect(page).toHaveURL(/\/product\//);
-    await expect(page.getByTestId('product-name')).toHaveText('Pliers');
+    await expect(productDetailPage.title).toHaveText('Pliers');
   });
 });

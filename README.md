@@ -25,7 +25,8 @@ See [`docs/architecture-decisions.md`](docs/architecture-decisions.md) for the r
 ```
 src/
   components/ HeaderNav                              (reusable UI, composed into pages)
-  pages/      LoginPage, ProductsPage, AccountPage   (UI interaction boundaries)
+  pages/      LoginPage, ProductsPage,               (UI interaction boundaries)
+              ProductDetailPage, AccountPage
   services/   ToolshopApi, schemas                   (backend communication + zod contracts)
   data/       UserBuilder                            (dynamic test data)
   fixtures/   app.fixture                            (dependency injection)
