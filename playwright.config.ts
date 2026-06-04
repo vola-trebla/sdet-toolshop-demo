@@ -22,7 +22,10 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
 
   // Local: rich HTML report. CI: blob report so shards can be merged.
-  reporter: process.env.CI ? [['blob'], ['github']] : [['html', { open: 'never' }], ['list']],
+  // Allure results are produced in every environment; TestOps ingests the same output.
+  reporter: process.env.CI
+    ? [['blob'], ['github'], ['allure-playwright']]
+    : [['html', { open: 'never' }], ['list'], ['allure-playwright']],
 
   use: {
     baseURL: config.webBaseUrl,

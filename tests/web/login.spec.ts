@@ -2,6 +2,7 @@ import { test, expect } from '@fixtures/app.fixture';
 import { config } from '@utils/config';
 
 test.describe('Login @web @auth', () => {
+  // Title tags (@web @auth @smoke) are mapped to Allure tags automatically.
   test('valid customer can sign in @smoke', async ({ page, loginPage }) => {
     await loginPage.open();
     await loginPage.login(config.customer.email, config.customer.password);

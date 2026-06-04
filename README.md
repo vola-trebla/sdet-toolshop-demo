@@ -14,6 +14,7 @@ Targets the public [Toolshop](https://practicesoftwaretesting.com) app (Web UI +
 - **Dynamic test data** — `UserBuilder` + faker, unique per run (parallel-safe).
 - **Auth reuse** — a `setup` project signs in once and persists `storageState`; authenticated tests start logged in (no per-test login).
 - **Resilient locators** — `data-test` / role-based, no brittle CSS chains.
+- **Allure reporting** — a `@step` decorator turns Page Object / service actions into report steps automatically; title tags (`@smoke`, `@auth`, ...) map to Allure tags. Richer metadata (severity, TMS links) is available via the `allure-js-commons` API where a case warrants it. The same output feeds Allure TestOps.
 - **CI with sharding** — GitHub Actions runs shards in parallel and merges into one HTML report.
 
 ## Layout
@@ -24,7 +25,7 @@ src/
   services/   ToolshopApi                            (backend communication)
   data/       UserBuilder                            (dynamic test data)
   fixtures/   app.fixture                            (dependency injection)
-  utils/      config                                 (environment-driven config)
+  utils/      config, step                           (env config, @step decorator)
 tests/
   auth.setup.ts                                      (logs in once, saves session)
   web/        login, products, account               (E2E)
@@ -42,8 +43,19 @@ npm test            # everything
 npm run test:web    # web only
 npm run test:api    # api only
 npm run test:smoke  # only @smoke-tagged
-npm run report      # open last HTML report
+npm run report      # open last Playwright HTML report
 ```
+
+### Allure report
+
+Every run writes `allure-results/`. Build / open the Allure report (needs the Allure CLI's Java runtime):
+
+```bash
+npm run allure:serve      # generate + open in one step
+npm run allure:generate   # write a static report to allure-report/
+```
+
+The same `allure-results/` is what an **Allure TestOps** instance ingests in CI — no code changes needed, only its uploader + token on the platform side.
 
 ## Conventions
 
@@ -55,4 +67,3 @@ npm run report      # open last HTML report
 
 - Telegram bot coverage via a `TelegramClient` service + cross-system validation.
 - Auto-create Jira tickets on failure via a custom Playwright reporter.
-- Allure reporting.
