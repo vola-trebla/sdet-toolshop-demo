@@ -1,6 +1,7 @@
-import { APIRequestContext, APIResponse, expect } from '@playwright/test';
+import type { APIRequestContext, APIResponse } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { config } from '@utils/config';
-import { NewUser } from '@data/UserBuilder';
+import type { NewUser } from '@data/UserBuilder';
 import { step } from '@utils/step';
 
 export interface LoginResponse {

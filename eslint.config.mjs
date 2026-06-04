@@ -7,6 +7,12 @@ export default tseslint.config(
   },
   ...tseslint.configs.recommended,
   {
+    rules: {
+      // Keep type-only imports separate from value imports for a clearer module graph.
+      '@typescript-eslint/consistent-type-imports': 'error',
+    },
+  },
+  {
     ...playwright.configs['flat/recommended'],
     files: ['tests/**/*.ts'],
   },
