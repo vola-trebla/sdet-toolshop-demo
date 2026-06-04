@@ -1,9 +1,19 @@
-name: Playwright Tests
+name: Playwright Tests (manual)
 
+# E2E/API suite is NOT a PR gate. It runs against a live third-party site, so it
+# is triggered on demand from the Actions tab (Run workflow), not on every push/PR.
 on:
-  push:
-    branches: [main, master]
-  pull_request:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: 'Which suite to run'
+        type: choice
+        options: [all, web, api]
+        default: all
+      grep:
+        description: 'Optional tag/title filter (e.g. @smoke)'
+        type: string
+        default: ''
 
 jobs:
   test:
@@ -28,7 +38,11 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run tests (sharded)
-        run: npx playwright test --shard=${{ matrix.shard }}/2
+        run: |
+          ARGS="--shard=${{ matrix.shard }}/2"
+          if [ "${{ inputs.project }}" != "all" ]; then ARGS="$ARGS --project=${{ inputs.project }}"; fi
+          if [ -n "${{ inputs.grep }}" ]; then ARGS="$ARGS --grep ${{ inputs.grep }}"; fi
+          npx playwright test $ARGS
 
       - name: Upload blob report
         if: ${{ !cancelled() }}
