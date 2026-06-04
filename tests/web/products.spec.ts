@@ -1,5 +1,6 @@
 import { test, expect } from '@fixtures/app.fixture';
 import { RoutePatterns } from '@constants/routes';
+import { Products } from '@constants/test-data';
 
 test.describe('Product catalog @web @catalog', () => {
   test.beforeEach(async ({ productsPage }) => {
@@ -15,10 +16,11 @@ test.describe('Product catalog @web @catalog', () => {
   test('search narrows the catalog', async ({ productsPage }) => {
     await expect(productsPage.productNames.first()).toBeVisible();
 
-    await productsPage.search('Pliers');
+    await productsPage.search(Products.pliers);
 
     await expect(productsPage.searchCaption).toBeVisible();
-    await expect(productsPage.productNames.first()).toContainText(/pliers/i);
+    // Build the matcher from the same constant; `i` = case-insensitive.
+    await expect(productsPage.productNames.first()).toContainText(new RegExp(Products.pliers, 'i'));
   });
 
   test('opening a product by exact name lands on its detail page', async ({
@@ -29,10 +31,10 @@ test.describe('Product catalog @web @catalog', () => {
     await expect(productsPage.productNames.first()).toBeVisible();
 
     // Exact match matters: the catalog also has "Combination Pliers", "Long Nose Pliers", etc.
-    await productsPage.openProductByName('Pliers');
+    await productsPage.openProductByName(Products.pliers);
 
     // page is used only for the navigation assertion; the DOM goes through the page object.
     await expect(page).toHaveURL(RoutePatterns.product);
-    await expect(productDetailPage.title).toHaveText('Pliers');
+    await expect(productDetailPage.title).toHaveText(Products.pliers);
   });
 });
