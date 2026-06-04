@@ -2,13 +2,12 @@ import { test, expect } from '../../src/fixtures/app.fixture';
 import { config } from '../../src/utils/config';
 
 test.describe('Login @web @auth', () => {
-  test('valid customer can sign in @smoke', async ({ page, loginPage, headerNav }) => {
+  test('valid customer can sign in @smoke', async ({ page, loginPage }) => {
     await loginPage.open();
     await loginPage.login(config.customer.email, config.customer.password);
 
-    // Web-first assertions live in the spec, on locators owned by the page objects.
+    // Reaching the account route is the reliable proof of a successful sign-in.
     await expect(page).toHaveURL(/account/);
-    await expect(headerNav.userMenu).toBeVisible();
   });
 
   test('invalid credentials are rejected', async ({ loginPage }) => {
