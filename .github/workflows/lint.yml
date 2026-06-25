@@ -10,7 +10,7 @@ jobs:
     name: Lint + typecheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v6
         with:
@@ -28,7 +28,7 @@ jobs:
     name: Lint workflows
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # Validates the GitHub Actions workflows themselves (expressions, contexts,
       # and shellcheck over run: blocks) — the layer the JS checks don't cover.
