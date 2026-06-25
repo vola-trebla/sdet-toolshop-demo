@@ -36,7 +36,7 @@ jobs:
       CUSTOMER_EMAIL: ${{ vars.CUSTOMER_EMAIL || 'customer@practicesoftwaretesting.com' }}
       CUSTOMER_PASSWORD: ${{ secrets.CUSTOMER_PASSWORD || 'welcome01' }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install dependencies
         run: npm ci
@@ -64,7 +64,7 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
